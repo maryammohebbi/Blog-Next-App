@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 
-// import { fontFamily } from 'tailwindcss/defaultTheme'
+import { fontFamily } from 'tailwindcss/defaultTheme'
 // import tailwindFormPlugin from '@tailwindcss/forms'
 
 function withOpacity(variableName) {
@@ -51,7 +51,7 @@ export default {
         padding: '1rem',
       },
       fontFamily: {
-        // sans: ['var(--font-vazir)', ...fontFamily.sans],
+        sans: ['var(--font-vazir)', ...fontFamily.sans],
       },
     },
   },
