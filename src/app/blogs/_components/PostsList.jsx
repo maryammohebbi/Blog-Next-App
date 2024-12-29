@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { BsClock } from 'react-icons/bs'
 import Avatar from '@/ui/Avatar'
 import Author from './Author'
+import PostInteractions from './PostInteractions'
 
 async function PostsList() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/post/list`)
@@ -32,7 +33,7 @@ async function PostsList() {
             </Link>
 
             {/* post author - readingTime */}
-            <div className="flex flex-center justify-between">
+            <div className="flex flex-center justify-between mb-4">
               <Author {...post.author} />
               <div className="flex items-center text-[10px] text-secondary-500">
                 <BsClock className="w-4 h-4 text-secondary-500 ml-1" />
@@ -41,6 +42,7 @@ async function PostsList() {
                 <span>دقیقه</span>
               </div>
             </div>
+            <PostInteractions post={post} />
           </div>
         </div>
       ))}
