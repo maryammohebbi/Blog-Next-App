@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { notFound } from 'next/navigation'
 import React from 'react'
 
 async function SinglePost({ params }) {
@@ -6,9 +7,10 @@ async function SinglePost({ params }) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/post/slug/${params.postSlug}`
   )
-  const {
-    data: { post },
-  } = await res.json()
+  const { data } = await res.json()
+  const { post } = data || {}
+
+  if (!post) notFound()
 
   //   console.log(data)
   // console.log(post);
