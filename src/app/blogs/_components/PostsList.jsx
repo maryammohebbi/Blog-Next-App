@@ -6,12 +6,15 @@ import { BsClock } from 'react-icons/bs'
 import Avatar from '@/ui/Avatar'
 import Author from './Author'
 import PostInteractions from './PostInteractions'
+import { getPosts } from '@/services/postServices'
 
 async function PostsList() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/post/list`)
-  const {
-    data: { posts },
-  } = await res.json()
+  // const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/post/list`)
+  // const {
+  //   data: { posts },
+  // } = await res.json()
+
+  const posts = await getPosts()
 
   // console.log(posts)
 
