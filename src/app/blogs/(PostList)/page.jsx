@@ -2,7 +2,10 @@ import React, { Suspense } from 'react'
 import PostsList from '../_components/PostsList'
 import Spinner from '@/ui/Spinner'
 
+export const experimental_ppr = true 
+
 function BlogsListPage() {
+
   return (
     <div>
       <p>
