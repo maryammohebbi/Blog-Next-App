@@ -15,9 +15,9 @@ const nextConfig = {
       fullUrl: true,
     },
   },
-  experimental: {
-    ppr: 'incremental',
-  },
+  // experimental: {
+  //   ppr: 'incremental',
+  // },
 }
 
 export default nextConfig

@@ -1,11 +1,12 @@
+'use client'
+
 import React, { Suspense } from 'react'
 import PostsList from '../_components/PostsList'
 import Spinner from '@/ui/Spinner'
 
-export const experimental_ppr = true 
+export const experimental_ppr = true
 
 function BlogsListPage() {
-
   return (
     <div>
       <p>
@@ -13,9 +14,10 @@ function BlogsListPage() {
         vitae beatae, ratione corporis cum voluptate fugit quas possimus porro
         similique et facere labore soluta cumque libero quo aperiam obcaecati!
       </p>
-      <Suspense fallback={<Spinner />}>
+      {/* <Suspense fallback={<Spinner />}>
         <PostsList />
-      </Suspense>
+      </Suspense> */}
+      <PostsList />
     </div>
   )
 }
