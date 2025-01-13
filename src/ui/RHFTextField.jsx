@@ -7,6 +7,7 @@ function RHFTextField({
   dir = 'rtl',
   register,
   errors,
+  isRequired,
   validationSchema = {},
   ...rest
 }) {
@@ -19,6 +20,7 @@ function RHFTextField({
     >
       <label htmlFor={name} className="mb-2 block text-secondary-700">
         {label}
+        {isRequired && <span className="text-error">*</span>}
       </label>
       <input
         type={type}
