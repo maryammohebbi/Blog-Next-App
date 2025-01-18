@@ -7,9 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import Button from '@/ui/Button'
 import Link from 'next/link'
-import { signinApi } from 'services/authService'
-import toast from 'react-hot-toast'
-import { useRouter } from 'next/navigation'
+import { useAuth } from '@/context/AuthContext'
 
 const schema = yup
   .object({
@@ -28,16 +26,10 @@ function Signin() {
     mode: 'onTouched',
   })
 
-  const router = useRouter()
+  const { signin } = useAuth()
 
   const onSubmit = async (values) => {
-    try {
-      const { user, message } = await signinApi(values)
-      //   router.push('/profile')
-      toast.success(message)
-    } catch (error) {
-      toast.error(error?.response?.data?.message)
-    }
+    await signin(values)
   }
   return (
     <div>
