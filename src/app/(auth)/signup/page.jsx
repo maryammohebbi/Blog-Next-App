@@ -8,6 +8,7 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
+import SpinnerMini from '@/ui/SpinnerMini'
 
 // export const metadata = {
 //   title: 'ثبت نام',
@@ -70,9 +71,13 @@ function Signup() {
           dir="ltr"
           errors={errors}
         />
-        <Button type="submit" variant="primary" className="w-full">
-          ثبت نام
-        </Button>
+        {isLoading ? (
+          <SpinnerMini />
+        ) : (
+          <Button type="submit" variant="primary" className="w-full">
+            ثبت نام
+          </Button>
+        )}
 
         <Link href="/signin" className="text-secondary-500 mt-6 text-center">
           ورود
