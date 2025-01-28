@@ -1,12 +1,18 @@
 // 'use client'
 
-import React, { Suspense } from 'react'
+import React from 'react'
 import PostsList from '../_components/PostsList'
-import Spinner from '@/ui/Spinner'
+import { cookies } from 'next/headers'
+import { getPosts } from '@/services/postServices'
+import setCookieOnReq from '@/utils/setCookieOnReq'
 
-export const experimental_ppr = true
+// export const experimental_ppr = true
 
-function BlogsListPage() {
+async function BlogsListPage() {
+  const cookieStore = cookies()
+  const options = setCookieOnReq(cookieStore)
+  const posts = await getPosts(options)
+
   return (
     <div>
       <p>
@@ -17,7 +23,7 @@ function BlogsListPage() {
       {/* <Suspense fallback={<Spinner />}>
         <PostsList />
       </Suspense> */}
-      <PostsList />
+      <PostsList posts={posts} />
     </div>
   )
 }

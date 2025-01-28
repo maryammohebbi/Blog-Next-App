@@ -4,19 +4,12 @@ import Link from 'next/link'
 import { BsClock } from 'react-icons/bs'
 import Author from './Author'
 import PostInteractions from './PostInteractions'
-import { getPosts } from 'services/postServices'
-import setCookieOnReq from '@/utils/setCookieOnReq'
-import { cookies } from 'next/headers'
 
-async function PostsList() {
+async function PostsList({ posts }) {
   // const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/post/list`)
   // const {
   //   data: { posts },
   // } = await res.json()
-
-  const cookieStore = cookies()
-  const options = setCookieOnReq(cookieStore)
-  const posts = await getPosts(options)
 
   // console.log(posts)
 
@@ -52,9 +45,7 @@ async function PostsList() {
         </div>
       ))}
     </div>
-  ) : (
-    <p>No post's available.</p>
-  )
+  ) : null
 }
 
 export default PostsList
