@@ -4,7 +4,7 @@
     "paths": {
       // "@/*": ["./src/*"]
       "@/components/*": ["components/*"],
-      "@/services/*": ["src/services/*"],
+      "@/services/*": ["services/*"],
       "@/context/*": ["context/*"],
       "@/hooks/*": ["hooks/*"],
       "@/lib/*": ["lib/*"],

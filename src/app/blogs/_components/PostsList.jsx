@@ -1,12 +1,12 @@
-import Image from 'next/image'
 import React from 'react'
 import CoverImage from '../CoverImage'
 import Link from 'next/link'
 import { BsClock } from 'react-icons/bs'
-import Avatar from '@/ui/Avatar'
 import Author from './Author'
 import PostInteractions from './PostInteractions'
-import { getPosts } from '@/services/postServices'
+import { getPosts } from 'services/postServices'
+import setCookieOnReq from '@/utils/setCookieOnReq'
+import { cookies } from 'next/headers'
 
 async function PostsList() {
   // const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/post/list`)
@@ -14,11 +14,13 @@ async function PostsList() {
   //   data: { posts },
   // } = await res.json()
 
-  const posts = await getPosts()
+  const cookieStore = cookies()
+  const options = setCookieOnReq(cookieStore)
+  const posts = await getPosts(options)
 
   // console.log(posts)
 
-  return posts.length > 0 ? (
+  return posts?.length > 0 ? (
     <div className="grid grid-cols-12 gap-8">
       {posts.map((post) => (
         <div
@@ -50,7 +52,9 @@ async function PostsList() {
         </div>
       ))}
     </div>
-  ) : null
+  ) : (
+    <p>No post's available.</p>
+  )
 }
 
 export default PostsList
