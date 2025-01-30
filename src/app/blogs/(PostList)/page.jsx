@@ -5,13 +5,18 @@ import PostsList from '../_components/PostsList'
 import { cookies } from 'next/headers'
 import { getPosts } from '@/services/postServices'
 import setCookieOnReq from '@/utils/setCookieOnReq'
+import queryString from 'query-string'
 
 // export const experimental_ppr = true
 
-async function BlogsListPage() {
+async function BlogsListPage({ searchParams }) {
+  // console.log(searchParams)
+
+  const queries = queryString.stringify(searchParams)
+
   const cookieStore = cookies()
   const options = setCookieOnReq(cookieStore)
-  const posts = await getPosts(options)
+  const posts = await getPosts(queries, options)
 
   return (
     <div>
