@@ -18,19 +18,26 @@ async function BlogsListPage({ searchParams }) {
   const options = setCookieOnReq(cookieStore)
   const posts = await getPosts(queries, options)
 
+  const { search } = searchParams
+
   return (
-    <div>
-      <p>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Hic animi
-        vitae beatae, ratione corporis cum voluptate fugit quas possimus porro
-        similique et facere labore soluta cumque libero quo aperiam obcaecati!
-      </p>
-      {/* <Suspense fallback={<Spinner />}>
-        <PostsList />
-      </Suspense> */}
+    <>
+      {search ? (
+        <p className="mb-2 text-secondary-700">
+          {posts.length === 0
+            ? 'هیچ پستی با این مشخصات پیدا نشد'
+            : `نشان دادن ${posts.length}  نتیحه برای`}
+          <span className="font-bold">&quot;{search}&quot;</span>
+        </p>
+      ) : null}
       <PostsList posts={posts} />
-    </div>
+    </>
   )
 }
 
 export default BlogsListPage
+
+// For English text:
+// showing 3 results for "something"
+// const resultText = posts.length > 1 ? "results" : "result"
+// `showing ${posts.length} ${resultText} for ...`
