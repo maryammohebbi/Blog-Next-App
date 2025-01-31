@@ -1,15 +1,39 @@
 'use client'
-import Button from '@/ui/Button'
+import { createComment } from '@/lib/actions'
+import SubmitButton from '@/ui/SubmitButton'
 import TextArea from '@/ui/TextArea'
-import React, { useState } from 'react'
+import React, { useActionState, useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 
-function CommentForm() {
+const initialState = {
+  error: '',
+  message: '',
+}
+
+function CommentForm({ parentId, postId, onClose }) {
   const [text, setText] = useState('')
+  const [state, formAction] = useActionState(createComment, initialState)
+
+  useEffect(() => {
+    if (state?.message) {
+      toast.success(state.message)
+      onClose()
+    }
+    if (state?.error) {
+      toast.error(state.error)
+    }
+  }, [state])
   return (
     <div>
       <div className="flex justify-center mt-4">
         <div className="max-w-md  w-full">
-          <form className="space-y-7">
+          <form
+            action={async (formData) => {
+              formAction({ formData, postId, parentId })
+            }}
+            // action={createComment.bind(null, postId, parentId)}
+            className="space-y-7"
+          >
             <TextArea
               name="text"
               label="متن نظر"
@@ -17,7 +41,7 @@ function CommentForm() {
               isRequired
               onChange={(e) => setText(e.target.value)}
             />
-            <Button>ثبت</Button>
+            <SubmitButton>ثبت</SubmitButton>
           </form>
         </div>
       </div>
