@@ -14,6 +14,7 @@ function RHFTextField({
   const errorMessages = errors?.[name]
   const hasError = !!(errors && errorMessages)
 
+  
   return (
     <div
       className={`textField relative ${hasError ? 'textField--invalid' : ''}`}
@@ -34,7 +35,7 @@ function RHFTextField({
         {...rest}
       />
       {errors && errors[name] && (
-        <span className="text-red-600 blobk text-xs mt-2">
+        <span className="text-red-600 block text-xs mt-2">
           {errors[name]?.message}
         </span>
       )}
