@@ -4,8 +4,10 @@ import React from 'react'
 import { CiHome } from 'react-icons/ci'
 import { HiArrowLeftStartOnRectangle } from 'react-icons/hi2'
 import SideBarNavs from './SideBarNavs'
+import { AiOutlineClose } from 'react-icons/ai'
+import ButtonIcon from '@/ui/ButtonIcon'
 
-function SideBar() {
+function SideBar({ onClose }) {
   //   const { logout } = useAuth()
 
   //   const logoutHandler = async () => {
@@ -13,13 +15,26 @@ function SideBar() {
   //   }
   return (
     <div className="overflow-y-auto flex flex-col p-5 h-screen pt-10 lg:pt-8">
-      <Link
-        href="/"
-        className="flex items-center gap-x-4 justify-center text-secondary-700 border-b border-b-secondary-200 pb-2 mb-6"
-      >
-        <CiHome className="w-6 h-6" />
-        <span>نکست بلاگ</span>
-      </Link>
+      {/* sidebar header */}
+      <div className="flex items-center justify-between w-full mb-5 pb-2 border-b border-b-secondary-200">
+        <Link
+          href="/"
+          className="flex items-center gap-x-4 justify-center text-secondary-700 lg:flex-1"
+        >
+          <CiHome className="w-6 h-6" />
+          <span>نکست بلاگ</span>
+        </Link>
+
+        <ButtonIcon
+          onClick={onClose}
+          className="block lg:hidden border-none"
+          variant="outline"
+        >
+          <AiOutlineClose />
+        </ButtonIcon>
+      </div>
+
+      {/* sidebar content */}
       <div className="overflow-y-auto flex-auto">
         <SideBarNavs />
         <div
