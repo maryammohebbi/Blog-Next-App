@@ -4,8 +4,8 @@ import Table from '@/ui/Table'
 import React from 'react'
 import PostRow from './PostRow'
 
-function PostsTable() {
-  const posts = getPosts()
+async function PostsTable() {
+  const posts = await getPosts()
 
   if (!posts.length) return <Empty resourceName="پستی" />
 
