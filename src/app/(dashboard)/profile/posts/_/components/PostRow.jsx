@@ -3,6 +3,7 @@ import { toLocalDateShort } from '@/utils/dateFormatter'
 import { toPersianDigits } from '@/utils/numberFormatter'
 import truncateText from '@/utils/truncateText'
 import React from 'react'
+import { DeletePost, UpdatePost } from './Buttons'
 
 const typeStyle = {
   free: {
@@ -16,7 +17,7 @@ const typeStyle = {
 }
 
 function PostRow({ post, index }) {
-  const { title, category, createdAt, author, type } = post
+  const { _id, title, category, createdAt, author, type } = post
   return (
     <Table.Row>
       <td>{toPersianDigits(index + 1)}</td>
@@ -29,7 +30,12 @@ function PostRow({ post, index }) {
           {typeStyle[type].label}
         </span>
       </td>
-      <td>++++++</td>
+      <td>
+        <div className="flex items-center gap-x-3">
+          <DeletePost id={_id} />
+          <UpdatePost id={_id} />
+        </div>
+      </td>
     </Table.Row>
   )
 }
