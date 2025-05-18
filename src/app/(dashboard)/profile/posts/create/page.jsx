@@ -1,5 +1,6 @@
 import Breadcrumbs from '@/ui/Breadcrumbs'
 import React from 'react'
+import CreatePostForm from './_/CreatePostForm'
 
 function Page() {
   return (
@@ -17,7 +18,7 @@ function Page() {
           },
         ]}
       />
-      create post form ...
+      <CreatePostForm />
     </div>
   )
 }
