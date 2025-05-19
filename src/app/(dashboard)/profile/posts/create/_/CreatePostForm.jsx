@@ -1,21 +1,28 @@
 'use client'
 import { useCategories } from '@/hooks/useCategories'
+import ButtonIcon from '@/ui/ButtonIcon'
 import RHFSelect from '@/ui/RHFSelect'
 import RHFTextField from '@/ui/RHFTextField'
 import { yupResolver } from '@hookform/resolvers/yup'
-import React from 'react'
-import { useForm } from 'react-hook-form'
+import Image from 'next/image'
+import React, { useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
+import { MdClose } from 'react-icons/md'
+import FileInput from '@/ui/FileInput'
 
 const schema = yup.object()
 
 function CreatePostForm() {
   const { categories } = useCategories()
+  const [coverImageUrl, setCoverImageUrl] = useState(null)
   const {
+    control,
     register,
     formState: { errors },
     handleSubmit,
     reset,
+    setValue,
   } = useForm({
     mode: 'onTouched',
     resolver: yupResolver(schema),
@@ -65,6 +72,48 @@ function CreatePostForm() {
         isRequired
         options={categories}
       />
+      <Controller
+        name="coverImage"
+        control={control}
+        rules={{ required: 'کاور پست الزامی است' }}
+        render={({ field: { value, onChange, ...rest } }) => {
+          return (
+            <FileInput
+              label=" کاور پست"
+              name="coverImage"
+              {...rest}
+              value={value?.fileName}
+              onChange={(event) => {
+                const file = event.target.files[0]
+                onChange(file)
+                setCoverImageUrl(URL.createObjectURL(file))
+                event.target.value = null
+              }}
+              isRequired
+            />
+          )
+        }}
+      />
+      {coverImageUrl && (
+        <div className="relative aspect-video overflow-hidden rounded-lg">
+          <Image
+            fill
+            src={coverImageUrl}
+            alt="cover-image"
+            className="object-cover object-center"
+          />
+          <ButtonIcon
+            onClick={() => {
+              setCoverImageUrl(null)
+              setValue('coverImage', null)
+            }}
+            variant="red"
+            className="w-6 h-6 absolute left-1 top-1"
+          >
+            <MdClose />
+          </ButtonIcon>
+        </div>
+      )}
     </form>
   )
 }
