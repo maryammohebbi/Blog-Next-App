@@ -10,8 +10,32 @@ import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { MdClose } from 'react-icons/md'
 import FileInput from '@/ui/FileInput'
+import Button from '@/ui/Button'
 
-const schema = yup.object()
+const schema = yup
+  .object({
+    title: yup
+      .string()
+      .min(5, 'حداقل 5 کاراکتر را وارد کنید')
+      .required('عنوان ضروری است'),
+    briefText: yup
+      .string()
+      .min(5, 'حداقل 10 کاراکتر وارد کنید')
+      .required('توضیحات ضروری است'),
+    text: yup
+      .string()
+      .min(5, 'حداقل 10 کاراکتر وارد کنید')
+      .required('توضیحات ضروری است'),
+    slug: yup.string().required('اسلاگ ضروری است'),
+    readingTime: yup
+      .number()
+      .positive()
+      .integer()
+      .required('زمان مطالعه ضروری است')
+      .typeError('یک عدد را وارد کنید'),
+    category: yup.string().required('دسته بندی ضروری است'),
+  })
+  .required()
 
 function CreatePostForm() {
   const { categories } = useCategories()
@@ -27,8 +51,16 @@ function CreatePostForm() {
     mode: 'onTouched',
     resolver: yupResolver(schema),
   })
+  const onSubmit = (data) => {
+    // console.log(data)
+    const formData = new FormData()
+    for (key in data) {
+      formData.append(key, data[key])
+    }
+  }
+
   return (
-    <form className="form">
+    <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <RHFTextField
         name="title"
         label="عنوان"
@@ -90,6 +122,7 @@ function CreatePostForm() {
                 event.target.value = null
               }}
               isRequired
+              errors={errors}
             />
           )
         }}
@@ -114,6 +147,9 @@ function CreatePostForm() {
           </ButtonIcon>
         </div>
       )}
+      <Button variant="primary" type="submit" className="w-full">
+        تایید
+      </Button>
     </form>
   )
 }
