@@ -18,7 +18,7 @@ function FileInput({
   return (
     <>
       <label
-        for="file-upload"
+        htmlFor="file-upload"
         className={`cursor-pointer border-2 border-primary-900
     rounded-lg px-3 py-2 text-primary-900 flex items-center justify-center gap-x-2 ${className}`}
       >

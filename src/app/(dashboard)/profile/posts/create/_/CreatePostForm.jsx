@@ -11,6 +11,9 @@ import * as yup from 'yup'
 import { MdClose } from 'react-icons/md'
 import FileInput from '@/ui/FileInput'
 import Button from '@/ui/Button'
+import useCreatePost from './useCreatePost'
+import SpinnerMini from '@/ui/SpinnerMini'
+import { useRouter } from 'next/navigation'
 
 const schema = yup
   .object({
@@ -40,6 +43,8 @@ const schema = yup
 function CreatePostForm() {
   const { categories } = useCategories()
   const [coverImageUrl, setCoverImageUrl] = useState(null)
+  const { isCreating, createPost } = useCreatePost()
+  const router = useRouter()
   const {
     control,
     register,
@@ -54,9 +59,14 @@ function CreatePostForm() {
   const onSubmit = (data) => {
     // console.log(data)
     const formData = new FormData()
-    for (key in data) {
+    for (const key in data) {
       formData.append(key, data[key])
     }
+    createPost(formData, {
+      onSuccess: () => {
+        router.push('/profile/posts')
+      },
+    })
   }
 
   return (
@@ -147,9 +157,15 @@ function CreatePostForm() {
           </ButtonIcon>
         </div>
       )}
-      <Button variant="primary" type="submit" className="w-full">
-        تایید
-      </Button>
+      <div>
+        {isCreating ? (
+          <SpinnerMini />
+        ) : (
+          <Button variant="primary" type="submit" className="w-full">
+            تایید
+          </Button>
+        )}
+      </div>
     </form>
   )
 }
