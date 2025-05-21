@@ -5,7 +5,7 @@ import RHFSelect from '@/ui/RHFSelect'
 import RHFTextField from '@/ui/RHFTextField'
 import { yupResolver } from '@hookform/resolvers/yup'
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { MdClose } from 'react-icons/md'
@@ -14,6 +14,8 @@ import Button from '@/ui/Button'
 import useCreatePost from './useCreatePost'
 import SpinnerMini from '@/ui/SpinnerMini'
 import { useRouter } from 'next/navigation'
+import useEditPost from './useEditPost'
+import { imageUrlToFile } from '@/utils/fileFormatter'
 
 const schema = yup
   .object({
@@ -40,10 +42,38 @@ const schema = yup
   })
   .required()
 
-function CreatePostForm() {
+function CreatePostForm({ postToEdit = {} }) {
+  const { _id: editId } = postToEdit
+  const isEditSession = Boolean(editId)
+
+  const {
+    title,
+    briefText,
+    text,
+    slug,
+    readingTime,
+    category,
+    coverImage,
+    coverImageUrl: prevCoverImageUrl,
+  } = postToEdit
+
+  let editValues = {}
+
+  if (isEditSession) {
+    editValues = {
+      title,
+      briefText,
+      text,
+      slug,
+      readingTime,
+      category: category._id,
+      coverImage,
+    }
+  }
   const { categories } = useCategories()
-  const [coverImageUrl, setCoverImageUrl] = useState(null)
+  const [coverImageUrl, setCoverImageUrl] = useState(prevCoverImageUrl || null)
   const { isCreating, createPost } = useCreatePost()
+  const { editPost } = useEditPost()
   const router = useRouter()
   const {
     control,
@@ -55,18 +85,47 @@ function CreatePostForm() {
   } = useForm({
     mode: 'onTouched',
     resolver: yupResolver(schema),
+    defaultValues: editValues,
   })
+
+  useEffect(() => {
+    if (prevCoverImageUrl) {
+      // convert prev link to file
+      async function fetchMyApi() {
+        const file = await imageUrlToFile(prevCoverImageUrl)
+        setValue('coverImage', file)
+      }
+      fetchMyApi()
+    }
+  }, [editId])
+
   const onSubmit = (data) => {
     // console.log(data)
     const formData = new FormData()
     for (const key in data) {
       formData.append(key, data[key])
     }
-    createPost(formData, {
-      onSuccess: () => {
-        router.push('/profile/posts')
-      },
-    })
+
+    if (isEditSession) {
+      editPost(
+        {
+          id: editId,
+          data: formData,
+        },
+        {
+          onSuccess: () => {
+            reset()
+            router.push('/profile/posts')
+          },
+        }
+      )
+    } else {
+      createPost(formData, {
+        onSuccess: () => {
+          router.push('/profile/posts')
+        },
+      })
+    }
   }
 
   return (
