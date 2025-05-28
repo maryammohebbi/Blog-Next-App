@@ -2,10 +2,12 @@
 
 import ButtonIcon from '@/ui/ButtonIcon'
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
 import { CiTrash } from 'react-icons/ci'
 import { PiPencilLineLight } from 'react-icons/pi'
 import { LuPlus } from 'react-icons/lu'
+import Modal from '@/ui/Modal'
+import ConfirmDelete from '@/ui/ConfirmDelete'
 
 export function CreatePost() {
   return (
@@ -19,11 +21,25 @@ export function CreatePost() {
   )
 }
 
-export function DeletePost({ id }) {
+export function DeletePost({ post: { title, _id } }) {
+  const [open, setOpen] = useState(false)
   return (
-    <ButtonIcon variant="outline" onClick={() => console.log(id)}>
-      <CiTrash className="text-error" />
-    </ButtonIcon>
+    <>
+      <ButtonIcon variant="outline" onClick={() => setOpen(true)}>
+        <CiTrash className="text-error" />
+      </ButtonIcon>
+      <Modal
+        title={`حذف "${title}"`}
+        open={open}
+        onClose={() => setOpen(false)}
+      >
+        <ConfirmDelete
+          resourceName={title}
+          onClose={() => setOpen(false)}
+          onConfirm={() => console.log('delete')}
+        />
+      </Modal>
+    </>
   )
 }
 
