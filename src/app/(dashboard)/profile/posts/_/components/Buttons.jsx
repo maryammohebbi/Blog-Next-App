@@ -8,6 +8,8 @@ import { PiPencilLineLight } from 'react-icons/pi'
 import { LuPlus } from 'react-icons/lu'
 import Modal from '@/ui/Modal'
 import ConfirmDelete from '@/ui/ConfirmDelete'
+import useDeletePost from '../useDeletePost'
+import { useRouter } from 'next/navigation'
 
 export function CreatePost() {
   return (
@@ -21,8 +23,10 @@ export function CreatePost() {
   )
 }
 
-export function DeletePost({ post: { title, _id } }) {
+export function DeletePost({ post: { title, _id: id } }) {
   const [open, setOpen] = useState(false)
+  const { isDeleting, deletePost } = useDeletePost()
+  const router = useRouter()
   return (
     <>
       <ButtonIcon variant="outline" onClick={() => setOpen(true)}>
@@ -36,7 +40,19 @@ export function DeletePost({ post: { title, _id } }) {
         <ConfirmDelete
           resourceName={title}
           onClose={() => setOpen(false)}
-          onConfirm={() => console.log('delete')}
+          onConfirm={(e) => {
+            e.preventDefault()
+            deletePost(
+              { id },
+              {
+                onSuccess: () => {
+                  setOpen(false)
+                  router.refresh('/profile/posts')
+                },
+              }
+            )
+          }}
+          disabled={isDeleting}
         />
       </Modal>
     </>
